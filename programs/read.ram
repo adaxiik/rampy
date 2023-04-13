@@ -1,0 +1,8 @@
+R0 := read()
+L0:
+if (R0 < 0) goto L1
+write(R0)
+R0 := R0 - 1
+goto L0
+L1:
+halt        // print all numbers from R0 to 0

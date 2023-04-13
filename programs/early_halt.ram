@@ -1,0 +1,6 @@
+R0 := 1
+R1 := 2
+write(R0)
+halt
+write(R1)
+

@@ -4,10 +4,21 @@
 # 86
 
 import typer
+from enum import Enum
+class Action(Enum):
+    COMPILE_TO_C = "compile-to-c"
+    INTERPRET = "interpret"
 
-def main(program_path: str, print_parsed_program: bool = False):
-    with open(program_path, 'r') as f:
-        program_txt = f.read()
+def main(program_path: str
+         , print_parsed_program: bool = False
+         , action: Action = "interpret"):
+    try:
+        with open(program_path, 'r') as f:
+            program_txt = f.read()
+    except FileNotFoundError:
+        print(f"File {program_path} not found")
+        exit(1)
+    
 
     from src.parse_program import ProgramParser as pp, FailedToParse
 
@@ -20,6 +31,14 @@ def main(program_path: str, print_parsed_program: bool = False):
     if print_parsed_program:
         print(parsed_program)
 
+    if action == Action.COMPILE_TO_C:
+        print("Not implemented yet")
+        exit(1)
+    
+    if action == Action.INTERPRET:
+        from src.interpreter import Interpreter
+        interpreter = Interpreter(parsed_program)
+        interpreter.run()
     
     
 

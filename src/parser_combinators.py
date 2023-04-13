@@ -142,3 +142,5 @@ class ApplyParser:
     read = ParseCombinator.create_sequence_parser([whitespace, ignore_case_read, whitespace])
     write = ParseCombinator.create_sequence_parser([whitespace, ignore_case_write, whitespace])
     halt = ParseCombinator.create_sequence_parser([whitespace, ignore_case_halt, whitespace])
+    colon = ParseCombinator.create_sequence_parser([whitespace, ParseCombinator.create_char_parser(':')])
+    

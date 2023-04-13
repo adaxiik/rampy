@@ -1,0 +1,4 @@
+R0 := 34
+R1 := R0 + 35
+write(R1)       // outputs 69
+halt            

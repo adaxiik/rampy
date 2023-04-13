@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List, Union
 
 class Op(Enum):
     ADD = 0
@@ -51,14 +52,14 @@ Register = int
 Value = int
 
 class SetValue:
-    def __init__(self, register: Register, value: Value):
-        assert isinstance(register, int)
+    def __init__(self, target_register: Register, value: Value):
+        assert isinstance(target_register, int)
         assert isinstance(value, int)
-        self.register = register
+        self.target_register = target_register
         self.value = value
     
     def __repr__(self):
-        return f"SetValue(R{self.register}, {self.value})"
+        return f"SetValue(R{self.target_register}, {self.value})"
 
 class SetRegister:
     def __init__(self, target_register: Register, source_register: Register):
@@ -198,3 +199,27 @@ class Write:
 class Halt:
     def __repr__(self):
         return f"Halt()"
+
+class Label:
+    def __init__(self, label: str):
+        assert isinstance(label, str)
+        self.label = label
+
+    def __repr__(self):
+        return f"Label({self.label})"
+    
+Instruction = Union[SetValue
+                    , SetRegister
+                    , SetRegisterRegOpConst
+                    , SetRegisterRegOpReg
+                    , Load
+                    , Store
+                    , UnconditionalJmpToLabel
+                    , UnconditionalJmpToInstruction
+                    , ConditionalJmpToLabel
+                    , ConditionalJmpToInstruction
+                    , Read
+                    , Write
+                    , Halt
+                    , Label]
+Program = List[Instruction]

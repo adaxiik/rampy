@@ -1,4 +1,3 @@
-from typing import List, Union
 from .parser_combinators import ApplyParser
 
 from .instruction import *
@@ -7,13 +6,11 @@ class FailedToParse(Exception):
 
 
 
-Instruction = Union[SetValue, SetRegister]
-Program = List[Instruction]
 
 class ProgramParser():
     @staticmethod
     def parse(input_str: str) -> Program:
-        return [ProgramParser.parse_instruction(line) for line in input_str.splitlines()]
+        return [ProgramParser.parse_instruction(line) for line in input_str.splitlines() if line.strip() != ""]
     
     @staticmethod
     def parse_instruction(input_str: str) -> Instruction:
@@ -26,7 +23,8 @@ class ProgramParser():
                        , pp.parse_unconditional_jmp
                        , pp.parse_read
                        , pp.parse_write
-                       , pp.parse_halt]
+                       , pp.parse_halt
+                       , pp.parse_label]
         
         for parser in ins_parsers:
             result = parser(input_str)
@@ -242,3 +240,15 @@ class ProgramParser():
         input_str = halt_result.rest
 
         return Halt()
+    
+    @staticmethod
+    def parse_label(input_str: str) -> Label or None:
+        if not (label_result := ApplyParser.label(input_str)).is_valid:
+            return None
+        input_str = label_result.rest
+
+
+        if not (colon := ApplyParser.colon(input_str)).is_valid:
+            return None
+        
+        return Label(label_result.value)
