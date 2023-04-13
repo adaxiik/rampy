@@ -77,9 +77,11 @@ class Interpreter:
             result = self._apply_operation(instruction.op, self._get_register(instruction.first_source_register), self._get_register(instruction.second_source_register))
             self._set_register(instruction.target_register, result)
         elif isinstance(instruction, Load):
-            self._set_register(instruction.target_register, self._get_register(instruction.source_register))
+            source_reg = self._get_register(instruction.source_register)
+            self._set_register(instruction.target_register, self._get_register(source_reg))
         elif isinstance(instruction, Store):
-            self._set_register(instruction.target_register, self._get_register(instruction.source_register))
+            target_reg = self._get_register(instruction.target_register)
+            self._set_register(target_reg, self._get_register(instruction.source_register))
         elif isinstance(instruction, UnconditionalJmpToLabel):
             self.instruction_pointer = self.labels[instruction.label] - 1
         elif isinstance(instruction, UnconditionalJmpToInstruction):

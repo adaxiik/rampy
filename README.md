@@ -20,8 +20,28 @@ RAM interpreter and compiler in python
 | `write(R_)` | Write register to stdout |
 
 - Everything after parsed instruction is ignored, so you can write comments after instruction
-### Load instruction
-- tbd
+### Load/Store instruction
+- See this [example](programs/load_store.ram)
+```ram
+R0 := 69
+R1 := [R0]
+```
+is equivalent to
+```ram
+R0 := R69
+```
+
+and
+```ram
+R0 := 123
+R1 := 420
+[R0] := R1
+```
+is equivalent to
+```ram
+R123 := 420
+```
+
 
 ## Example
 - for more examples see [programs](programs) folder
