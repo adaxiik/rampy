@@ -133,6 +133,19 @@ class Debugger:
             memory_view += "R{}:\t {}\n".format(i, self.interpreter.registers[i])
         return memory_view
     
+    def _help(self) -> str:
+        help = ""
+        help += "Commands:\n"
+        help += "  run: Run the program until the next breakpoint\n"
+        help += "  step: Step through the program\n"
+        help += "  break <numbers>: Set a breakpoints at the given line\n"
+        help += "  delete <numbers>: Delete the given breakpoints\n"
+        help += "  memory <registers>: View the memory starting at the given register (default is 0)\n"
+        help += "  reset: Reset the program\n"
+        help += "  help: Show this help message\n"
+        help += "  quit: Exit the debugger\n"
+        return help
+    
     # TODOOO int conversion checks
     def run(self):
         last_command = "run"
@@ -217,6 +230,9 @@ class Debugger:
                     continue
                 detail_view_fn = None
                 current_details = self._memory_view(int(splitted[1]))
+            elif command.startswith("help") or command[0] == "h":
+                detail_view_fn = None
+                current_details = self._help()
             else:
                 detail_view_fn = None
                 current_details = "Unknown command \"{}\"".format(command)
