@@ -28,7 +28,7 @@ R1 := [R0]
 ```
 is equivalent to
 ```ram
-R0 := R69
+R1 := R69
 ```
 
 and
