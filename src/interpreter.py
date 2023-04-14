@@ -3,9 +3,9 @@ from .instruction import *
 class Interpreter:
     def __init__(self, program: Program):
         self.program: Program = program
-        self.instruction_pointer: int = 0
+        self.instruction_pointer: int = 1 # instruction are counted from 1
         self.registers: list[int] = [0] * 100
-        self.labels: dict[str, int] = { instruction.label: index for index, instruction in enumerate(program) if isinstance(instruction, Label) }
+        self.labels: dict[str, int] = { instruction.label: index + 1 for index, instruction in enumerate(program) if isinstance(instruction, Label) }
 
     Halt = bool
 
@@ -62,8 +62,13 @@ class Interpreter:
             if self.step():
                 break
 
-    def step(self) -> Halt:
-        instruction = self.program[self.instruction_pointer]
+    def reset(self):
+        self.instruction_pointer = 1
+        self.registers = [0] * 100
+        
+
+    def step(self, input_fn = input, output_fn = print) -> Halt:
+        instruction = self.program[self.instruction_pointer - 1]
         if isinstance(instruction, Label):
             pass
         elif isinstance(instruction, SetValue):
@@ -93,9 +98,9 @@ class Interpreter:
             if self._apply_condition(instruction.condition):
                 self.instruction_pointer = instruction.instruction - 1
         elif isinstance(instruction, Read):
-            self._set_register(instruction.target_register, int(input()))
+                self._set_register(instruction.target_register, int(input_fn()))
         elif isinstance(instruction, Write):
-            print(self._get_register(instruction.source_register))
+            output_fn(self._get_register(instruction.source_register))
         elif isinstance(instruction, Halt):
             return True
         else:
@@ -104,3 +109,6 @@ class Interpreter:
         self.instruction_pointer += 1
         return False
         
+    @property
+    def current_instruction(self) -> Instruction:
+        return self.program[self.instruction_pointer - 1]

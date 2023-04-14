@@ -5,8 +5,6 @@ class FailedToParse(Exception):
     pass
 
 
-
-
 class ProgramParser():
     @staticmethod
     def parse(input_str: str) -> Program:

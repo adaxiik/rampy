@@ -8,6 +8,7 @@ from enum import Enum
 class Action(Enum):
     COMPILE_TO_C = "compile-to-c"
     INTERPRET = "interpret"
+    DEBUG = "debug"
 
 def main(program_path: str
          , print_parsed_program: bool = False
@@ -39,6 +40,19 @@ def main(program_path: str
         from src.interpreter import Interpreter
         interpreter = Interpreter(parsed_program)
         interpreter.run()
+        return
+    
+    if action == Action.DEBUG:
+        from src.debugger import Debugger
+        from src.interpreter import Interpreter
+        try:
+            interpreter = Interpreter(parsed_program)
+            debugger = Debugger(interpreter)
+            debugger.run()
+        except Exception as e:
+            with open("debugger.log", 'w') as f:
+                f.write(str(e))
+        return
     
     
 

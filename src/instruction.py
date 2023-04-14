@@ -20,6 +20,18 @@ class Op(Enum):
             return Op.DIV
         else:
             raise ValueError(f"Invalid op: {string}")
+        
+    def __str__(self) -> str:
+        if self == Op.ADD:
+            return "+"
+        elif self == Op.SUB:
+            return "-"
+        elif self == Op.MUL:
+            return "*"
+        elif self == Op.DIV:
+            return "/"
+        else:
+            raise ValueError(f"Invalid op: {self}")
 
 
 class Rel(Enum):
@@ -47,6 +59,22 @@ class Rel(Enum):
             return Rel.NE
         else:
             raise ValueError(f"Invalid rel: {string}")
+        
+    def __str__(self) -> str:
+        if self == Rel.LT:
+            return "<"
+        elif self == Rel.GT:
+            return ">"
+        elif self == Rel.LE:
+            return "<="
+        elif self == Rel.GE:
+            return ">="
+        elif self == Rel.EQ:
+            return "=="
+        elif self == Rel.NE:
+            return "!="
+        else:
+            raise ValueError(f"Invalid rel: {self}")
 
 Register = int
 Value = int
@@ -60,6 +88,9 @@ class SetValue:
     
     def __repr__(self):
         return f"SetValue(R{self.target_register}, {self.value})"
+    
+    def __str__(self):
+        return f"R{self.target_register} := {self.value}"
 
 class SetRegister:
     def __init__(self, target_register: Register, source_register: Register):
@@ -70,6 +101,9 @@ class SetRegister:
     
     def __repr__(self):
         return f"SetRegister(R{self.target_register}, R{self.source_register})"
+    
+    def __str__(self):
+        return f"R{self.target_register} := R{self.source_register}"
     
 class SetRegisterRegOpConst:
     def __init__(self, target_register: Register, source_register: Register, op: Op, value: Value):
@@ -85,6 +119,9 @@ class SetRegisterRegOpConst:
     def __repr__(self):
         return f"SetRegisterRegOpConst(R{self.target_register}, R{self.source_register}, {self.op}, {self.value})"
     
+    def __str__(self):
+        return f"R{self.target_register} := R{self.source_register} {self.op} {self.value}"
+
 class SetRegisterRegOpReg:
     def __init__(self, target_register: Register, first_source_register: Register, op: Op, second_source_register: Register):
         assert isinstance(target_register, int)
@@ -99,6 +136,8 @@ class SetRegisterRegOpReg:
     def __repr__(self):
         return f"SetRegisterRegOpReg(R{self.target_register}, R{self.first_source_register}, {self.op}, R{self.second_source_register})"
 
+    def __str__(self):
+        return f"R{self.target_register} := R{self.first_source_register} {self.op} R{self.second_source_register}"
 class Load:
     def __init__(self, target_register: Register, source_register: Register):
         assert isinstance(target_register, int)
@@ -108,6 +147,9 @@ class Load:
 
     def __repr__(self):
         return f"Load(R{self.target_register}, R{self.source_register})"
+    
+    def __str__(self):
+        return f"R{self.target_register} := [R{self.source_register}]"
     
 class Store:
     def __init__(self, target_register: Register, source_register: Register):
@@ -119,6 +161,9 @@ class Store:
     def __repr__(self):
         return f"Store(R{self.target_register}, R{self.source_register})"
     
+    def __str__(self):
+        return f"[R{self.target_register}] := R{self.source_register}"
+    
 
 class UnconditionalJmpToLabel:
     def __init__(self, label: str):
@@ -128,6 +173,9 @@ class UnconditionalJmpToLabel:
     def __repr__(self):
         return f"UnconditionalJumpToLabel({self.label})"
     
+    def __str__(self):
+        return f"goto {self.label}"
+    
 class UnconditionalJmpToInstruction:
     def __init__(self, instruction: int):
         assert isinstance(instruction, int)
@@ -135,6 +183,9 @@ class UnconditionalJmpToInstruction:
 
     def __repr__(self):
         return f"UnconditionalJumpToInstruction({self.instruction})"
+    
+    def __str__(self):
+        return f"goto {self.instruction}"
     
 class ConditionWithRegister:
     def __init__(self, first_register: Register, rel: Rel, second_register: Register):
@@ -148,6 +199,9 @@ class ConditionWithRegister:
     def __repr__(self):
         return f"ConditionWithRegister(R{self.first_register}, {self.rel}, R{self.second_register})"
     
+    def __str__(self):
+        return f"R{self.first_register} {self.rel} R{self.second_register}"
+    
 class ConditionWithConst:
     def __init__(self, register: Register, rel: Rel, value: Value):
         assert isinstance(register, int)
@@ -160,6 +214,9 @@ class ConditionWithConst:
     def __repr__(self):
         return f"ConditionWithConst(R{self.register}, {self.rel}, {self.value})"
     
+    def __str__(self):
+        return f"R{self.register} {self.rel} {self.value}"
+    
 class ConditionalJmpToLabel:
     def __init__(self, condition: ConditionWithRegister or ConditionWithConst, label: str):
         assert isinstance(condition, ConditionWithRegister) or isinstance(condition, ConditionWithConst)
@@ -170,6 +227,9 @@ class ConditionalJmpToLabel:
     def __repr__(self):
         return f"ConditionalJumpToLabel({self.condition}, {self.label})"
     
+    def __str__(self):
+        return f"if ({self.condition}) goto {self.label}"
+    
 class ConditionalJmpToInstruction:
     def __init__(self, condition: ConditionWithRegister or ConditionWithConst, instruction: int):
         assert isinstance(condition, ConditionWithRegister) or isinstance(condition, ConditionWithConst)
@@ -179,6 +239,9 @@ class ConditionalJmpToInstruction:
 
     def __repr__(self):
         return f"ConditionalJumpToInstruction({self.condition}, {self.instruction})"
+    
+    def __str__(self):
+        return f"if ({self.condition}) goto {self.instruction}"
 
 class Read:
     def __init__(self, target_register: Register):
@@ -188,6 +251,9 @@ class Read:
     def __repr__(self):
         return f"Read(R{self.target_register})"
     
+    def __str__(self):
+        return f"R{self.target_register} := read()"
+    
 class Write:
     def __init__(self, source_register: Register):
         assert isinstance(source_register, int)
@@ -196,9 +262,15 @@ class Write:
     def __repr__(self):
         return f"Write(R{self.source_register})"
     
+    def __str__(self):
+        return f"write(R{self.source_register})"
+    
 class Halt:
     def __repr__(self):
         return f"Halt()"
+    
+    def __str__(self):
+        return f"halt"
 
 class Label:
     def __init__(self, label: str):
@@ -207,6 +279,9 @@ class Label:
 
     def __repr__(self):
         return f"Label({self.label})"
+    
+    def __str__(self):
+        return f"{self.label}:"
     
 Instruction = Union[SetValue
                     , SetRegister
