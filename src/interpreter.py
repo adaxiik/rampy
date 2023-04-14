@@ -68,6 +68,8 @@ class Interpreter:
         
 
     def step(self, input_fn = input, output_fn = print) -> Halt:
+        if self.instruction_pointer > len(self.program):
+            return True
         instruction = self.program[self.instruction_pointer - 1]
         if isinstance(instruction, Label):
             pass

@@ -50,6 +50,7 @@ def main(program_path: str
             debugger = Debugger(interpreter)
             debugger.run()
         except Exception as e:
+            # debugger controls terminal, so we need to print exception to file xd
             with open("debugger.log", 'w') as f:
                 f.write(str(e))
         return
