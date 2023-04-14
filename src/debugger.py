@@ -186,11 +186,20 @@ class Debugger:
                 self.program_output = []
                 current_code = get_code_view()
                 detail_view_fn = self._create_info
+
+
+                
             elif command.startswith("quit") or command[0] == "q":
                 break
+
+
+
             elif command.startswith("run") or command[0] == "r":
                 self._run_debugger(input_fn, output_fn)
                 current_code = get_code_view()
+
+
+
             elif command.startswith("break") or command[0] == "b":
                 splitted = command.split(" ")
                 if len(splitted) < 2:
@@ -206,6 +215,8 @@ class Debugger:
                         breakpoint = int(splitted[i])
                     self.breakpoints.append(breakpoint)
 
+
+
             elif command.startswith("delete") or command[0] == "d":
                 splitted = command.split(" ")
                 if len(splitted) < 2:
@@ -218,11 +229,19 @@ class Debugger:
                     breakpoint = int(splitted[i])
                     self.breakpoints.remove(breakpoint)
 
+
+
             elif command.startswith("step") or command[0] == "s":
                 self.interpreter.step(input_fn=input_fn, output_fn=output_fn)
                 current_code = get_code_view()
+
+
+
             elif command.startswith("info") or command[0] == "i":
                 detail_view_fn = self._create_info
+
+
+
             elif command.startswith("memory") or command[0] == "m":
                 splitted = command.split(" ")
                 if len(splitted) < 2:
@@ -230,9 +249,15 @@ class Debugger:
                     continue
                 detail_view_fn = None
                 current_details = self._memory_view(int(splitted[1]))
+
+
+
             elif command.startswith("help") or command[0] == "h":
                 detail_view_fn = None
                 current_details = self._help()
+
+
+
             else:
                 detail_view_fn = None
                 current_details = "Unknown command \"{}\"".format(command)
