@@ -117,7 +117,7 @@ class SetRegisterRegOpConst:
         self.value = value
     
     def __repr__(self):
-        return f"SetRegisterRegOpConst(R{self.target_register}, R{self.source_register}, {self.op}, {self.value})"
+        return f"SetRegisterRegOpConst(R{self.target_register}, R{self.source_register}, {repr(self.op)}, {self.value})"
     
     def __str__(self):
         return f"R{self.target_register} := R{self.source_register} {self.op} {self.value}"
@@ -134,7 +134,7 @@ class SetRegisterRegOpReg:
         self.second_source_register = second_source_register
 
     def __repr__(self):
-        return f"SetRegisterRegOpReg(R{self.target_register}, R{self.first_source_register}, {self.op}, R{self.second_source_register})"
+        return f"SetRegisterRegOpReg(R{self.target_register}, R{self.first_source_register}, {repr(self.op)}, R{self.second_source_register})"
 
     def __str__(self):
         return f"R{self.target_register} := R{self.first_source_register} {self.op} R{self.second_source_register}"
@@ -197,7 +197,7 @@ class ConditionWithRegister:
         self.second_register = second_register
 
     def __repr__(self):
-        return f"ConditionWithRegister(R{self.first_register}, {self.rel}, R{self.second_register})"
+        return f"ConditionWithRegister(R{self.first_register}, {repr(self.rel)}, R{self.second_register})"
     
     def __str__(self):
         return f"R{self.first_register} {self.rel} R{self.second_register}"
@@ -212,7 +212,7 @@ class ConditionWithConst:
         self.value = value
 
     def __repr__(self):
-        return f"ConditionWithConst(R{self.register}, {self.rel}, {self.value})"
+        return f"ConditionWithConst(R{self.register}, {repr(self.rel)}, {self.value})"
     
     def __str__(self):
         return f"R{self.register} {self.rel} {self.value}"
@@ -225,7 +225,7 @@ class ConditionalJmpToLabel:
         self.label = label
 
     def __repr__(self):
-        return f"ConditionalJumpToLabel({self.condition}, {self.label})"
+        return f"ConditionalJumpToLabel({repr(self.condition)}, {self.label})"
     
     def __str__(self):
         return f"if ({self.condition}) goto {self.label}"
@@ -238,7 +238,7 @@ class ConditionalJmpToInstruction:
         self.instruction = instruction
 
     def __repr__(self):
-        return f"ConditionalJumpToInstruction({self.condition}, {self.instruction})"
+        return f"ConditionalJumpToInstruction({repr(self.condition)}, {self.instruction})"
     
     def __str__(self):
         return f"if ({self.condition}) goto {self.instruction}"

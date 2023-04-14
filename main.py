@@ -3,12 +3,18 @@
 # https://www.cs.vsb.cz/sawa/uti/slides/uti-06-cz.pdf
 # 86
 
+from typing import Tuple
 import typer
 from enum import Enum
+
 class Action(Enum):
     COMPILE_TO_C = "compile-to-c"
+    COMPILE_TO_ASM = "compile-to-asm"
+    COMPILE_TO_TURING_MACHINE = "compile-to-turing-machine"
     INTERPRET = "interpret"
     DEBUG = "debug"
+
+SomeType = Tuple[int, str, Action]
 
 def main(program_path: str
          , print_parsed_program: bool = False
@@ -30,11 +36,9 @@ def main(program_path: str
         exit(1)
 
     if print_parsed_program:
-        print(parsed_program)
+        for instruction in parsed_program:
+            print(repr(instruction))
 
-    if action == Action.COMPILE_TO_C:
-        print("Not implemented yet")
-        exit(1)
     
     if action == Action.INTERPRET:
         from src.interpreter import Interpreter
@@ -55,7 +59,23 @@ def main(program_path: str
                 f.write(str(e))
         return
     
-    
+    if action == Action.COMPILE_TO_ASM:
+        from src.compiler import Compiler
+        from src.backend.asm_backend import BackendAsm
+        compiler = Compiler(BackendAsm(parsed_program))
+        print(compiler.compile())
+        exit(1)
+
+    if action == Action.COMPILE_TO_C:
+        from src.compiler import Compiler
+        from src.backend.c_backend import BackendC
+        compiler = Compiler(BackendC(parsed_program))
+        print(compiler.compile())
+        exit(1)
+        
+    if action == Action.COMPILE_TO_TURING_MACHINE:
+        print("Not implemented yet")
+        exit(1)
 
 
 if __name__ == '__main__':
