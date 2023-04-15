@@ -18,11 +18,11 @@ class BackendC:
     def header(self) -> str:
         return """
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdint.h>
 
 int main(void) 
 {
-    int """ + self.MEMORY_NAME + "[2048] = {0};\n"
+    int64_t """ + self.MEMORY_NAME + "[2048] = {0};\n"
     
     def footer(self) -> str:
         return "}"

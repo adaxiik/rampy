@@ -1,6 +1,6 @@
 from typing import Union
-from .backend.c_backend import BackendC
-from .backend.asm_backend import BackendAsm
+from .backend.backend_c import BackendC
+from .backend.backend_asm import BackendAsm
 from .instruction import *
 
 Backend = Union[BackendC, BackendAsm]

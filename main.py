@@ -18,7 +18,8 @@ SomeType = Tuple[int, str, Action]
 
 def main(program_path: str
          , print_parsed_program: bool = False
-         , action: Action = "interpret"):
+         , action: Action = "interpret"
+         , output_path: str = None):
     try:
         with open(program_path, 'r') as f:
             program_txt = f.read()
@@ -57,21 +58,29 @@ def main(program_path: str
             # debugger controls terminal, so we need to print exception to file xd
             with open("debugger.log", 'w') as f:
                 f.write(str(e))
-        return
+        exit(0)
     
     if action == Action.COMPILE_TO_ASM:
         from src.compiler import Compiler
-        from src.backend.asm_backend import BackendAsm
+        from src.backend.backend_asm import BackendAsm
         compiler = Compiler(BackendAsm(parsed_program))
-        print(compiler.compile())
-        exit(1)
+        if output_path:
+            with open(output_path, 'w') as f:
+                f.write(compiler.compile())
+        else:
+            print(compiler.compile())
+        exit(0)
 
     if action == Action.COMPILE_TO_C:
         from src.compiler import Compiler
-        from src.backend.c_backend import BackendC
+        from src.backend.backend_c import BackendC
         compiler = Compiler(BackendC(parsed_program))
-        print(compiler.compile())
-        exit(1)
+        if output_path:
+            with open(output_path, 'w') as f:
+                f.write(compiler.compile())
+        else:
+            print(compiler.compile())
+        exit(0)
         
     if action == Action.COMPILE_TO_TURING_MACHINE:
         print("Not implemented yet")

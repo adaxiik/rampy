@@ -58,6 +58,20 @@ halt        // comment.. ignored
 - This program reads single number from stdin, and then prints R0..0 to stdout
 
 ## Usage
-- `python3 rampy.py <file>`
+- `python3 rampy.py <file>` for interpreting
+- `python3 rampy.py <file> --action=debug` for debugging
 - `python3 rampy.py --help` for more info
 
+## Compilation
+- currently is fully supported only C and NASM
+- both C and NASM using 64bit signed integers and has 2048 registers (R0..R2047)
+```sh
+./main.py programs/fib.ram --action=compile-to-c --output-path=fib.c
+gcc fib.c -o fib
+./fib
+```
+```sh
+./main.py programs/fib.ram --action=compile-to-asm --output-path=fib.asm
+nasm -f elf64 -F dwarf fib.asm -o fib.o && ld fib.o -o fib
+./fib
+```
