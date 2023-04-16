@@ -75,3 +75,9 @@ gcc fib.c -o fib
 nasm -f elf64 -F dwarf fib.asm -o fib.o && ld fib.o -o fib
 ./fib
 ```
+
+![compilation](examples/compilation.png)
+
+![debug_info](examples/debug_info.png)
+
+![debug_memory](examples/debug_memory.png)
