@@ -49,7 +49,7 @@ class Interpreter:
         
         raise ValueError(f"Invalid relation: {relation}")
     
-    def _apply_condition(self, condition: ConditionWithConst or ConditionWithRegister) -> bool:
+    def _apply_condition(self, condition: Union[ConditionWithConst, ConditionWithRegister] ) -> bool:
         if isinstance(condition, ConditionWithConst):
             return self._apply_relation(condition.rel, self._get_register(condition.register), condition.value)
         elif isinstance(condition, ConditionWithRegister):

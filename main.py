@@ -10,7 +10,6 @@ from enum import Enum
 class Action(Enum):
     COMPILE_TO_C = "compile-to-c"
     COMPILE_TO_ASM = "compile-to-asm"
-    COMPILE_TO_TURING_MACHINE = "compile-to-turing-machine"
     INTERPRET = "interpret"
     DEBUG = "debug"
 
@@ -81,10 +80,6 @@ def main(program_path: str
         else:
             print(compiler.compile())
         exit(0)
-        
-    if action == Action.COMPILE_TO_TURING_MACHINE:
-        print("Not implemented yet")
-        exit(1)
 
 
 if __name__ == '__main__':

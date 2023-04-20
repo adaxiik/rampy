@@ -32,7 +32,7 @@ class ProgramParser():
         raise FailedToParse(f"Failed to parse instruction from {input_str}")
 
     @staticmethod
-    def parse_set_value(input_str: str) -> SetValue or None:
+    def parse_set_value(input_str: str) -> Union[SetValue, None]: 
         if not(register_result := ApplyParser.register(input_str)).is_valid:
             return None
         input_str = register_result.rest
@@ -45,7 +45,7 @@ class ProgramParser():
         return SetValue(int(register_result.value[1:]), int(value_result.value))
     
     @staticmethod
-    def parse_set_register(input_str: str) -> SetRegister or SetRegisterRegOpConst or SetRegisterRegOpReg or None:
+    def parse_set_register(input_str: str) -> Union[SetRegister, SetRegisterRegOpConst, SetRegisterRegOpReg, None]: 
         if not(target_register_result := ApplyParser.register(input_str)).is_valid:
             return None
         input_str = target_register_result.rest
@@ -78,7 +78,7 @@ class ProgramParser():
         return None
 
     @staticmethod
-    def parse_load(input_str: str) -> Load or None:
+    def parse_load(input_str: str) -> Union[Load, None]:
         if not(target_register := ApplyParser.register(input_str)).is_valid:
             return None
         input_str = target_register.rest
@@ -101,7 +101,7 @@ class ProgramParser():
         return Load(int(target_register.value[1:]), int(source_register.value[1:]))
     
     @staticmethod
-    def parse_store(input_str: str) -> Store or None:
+    def parse_store(input_str: str) -> Union[Store, None] :
         if not(lsparen := ApplyParser.lsparen(input_str)).is_valid:
             return None
         input_str = lsparen.rest
@@ -124,7 +124,7 @@ class ProgramParser():
         return Store(int(target_register.value[1:]), int(source_register.value[1:]))
         
     @staticmethod
-    def parse_conditional_jmp(input_str: str) -> ConditionalJmpToInstruction or ConditionalJmpToLabel or None:
+    def parse_conditional_jmp(input_str: str) -> Union[ConditionalJmpToInstruction, ConditionalJmpToLabel, None] :
         if not (if_result := ApplyParser.if_(input_str)).is_valid:
             return None
         input_str = if_result.rest
@@ -144,7 +144,7 @@ class ProgramParser():
         second_register = ApplyParser.register(input_str)
         const = ApplyParser.uint(input_str)
 
-        condition : ConditionWithRegister or ConditionWithConst = None
+        condition : Union[ConditionWithRegister, ConditionWithConst] = None
 
         if second_register.is_valid:
             input_str = second_register.rest
@@ -174,7 +174,7 @@ class ProgramParser():
         return None
         
     @staticmethod
-    def parse_unconditional_jmp(input_str: str) -> UnconditionalJmpToInstruction or UnconditionalJmpToLabel or None:
+    def parse_unconditional_jmp(input_str: str) -> Union[UnconditionalJmpToInstruction, UnconditionalJmpToLabel, None]:
         if not (goto_result := ApplyParser.goto_(input_str)).is_valid:
             return None
         input_str = goto_result.rest
@@ -189,7 +189,7 @@ class ProgramParser():
         return None
     
     @staticmethod
-    def parse_read(input_str: str) -> Read or None:
+    def parse_read(input_str: str) -> Union[Read, None]:
         # R1 := read()
         if not (target_register := ApplyParser.register(input_str)).is_valid:
             return None
@@ -213,7 +213,7 @@ class ProgramParser():
         return Read(int(target_register.value[1:]))
     
     @staticmethod
-    def parse_write(input_str: str) -> Write or None:
+    def parse_write(input_str: str) -> Union[Write, None]:
         if not (write_result := ApplyParser.write(input_str)).is_valid:
             return None
         input_str = write_result.rest
@@ -232,7 +232,7 @@ class ProgramParser():
         return Write(int(source_register.value[1:]))
     
     @staticmethod
-    def parse_halt(input_str: str) -> Halt or None:
+    def parse_halt(input_str: str) -> Union[Halt, None] :
         if not (halt_result := ApplyParser.halt(input_str)).is_valid:
             return None
         input_str = halt_result.rest
@@ -240,7 +240,7 @@ class ProgramParser():
         return Halt()
     
     @staticmethod
-    def parse_label(input_str: str) -> Label or None:
+    def parse_label(input_str: str) ->  Union[Label, None]:
         if not (label_result := ApplyParser.label(input_str)).is_valid:
             return None
         input_str = label_result.rest

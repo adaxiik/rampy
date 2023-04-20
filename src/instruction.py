@@ -218,7 +218,7 @@ class ConditionWithConst:
         return f"R{self.register} {self.rel} {self.value}"
     
 class ConditionalJmpToLabel:
-    def __init__(self, condition: ConditionWithRegister or ConditionWithConst, label: str):
+    def __init__(self, condition: Union[ConditionWithRegister, ConditionWithConst], label: str):
         assert isinstance(condition, ConditionWithRegister) or isinstance(condition, ConditionWithConst)
         assert isinstance(label, str)
         self.condition = condition
@@ -231,7 +231,7 @@ class ConditionalJmpToLabel:
         return f"if ({self.condition}) goto {self.label}"
     
 class ConditionalJmpToInstruction:
-    def __init__(self, condition: ConditionWithRegister or ConditionWithConst, instruction: int):
+    def __init__(self, condition: Union[ConditionWithRegister, ConditionWithConst], instruction: int):
         assert isinstance(condition, ConditionWithRegister) or isinstance(condition, ConditionWithConst)
         assert isinstance(instruction, int)
         self.condition = condition

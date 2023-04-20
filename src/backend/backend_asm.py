@@ -213,7 +213,7 @@ _start:
         else:
             raise ValueError(f"Unknown rel: {rel}")
     
-    def _compile_condition(self, condition: ConditionWithRegister or ConditionWithConst) -> str:
+    def _compile_condition(self, condition:  Union[ConditionWithRegister, ConditionWithConst]) -> str:
         if isinstance(condition, ConditionWithRegister):
             result = f"mov rax, qword [memory + {condition.first_register} * 8]\n"
             result += f"\tmov rdx, qword [memory + {condition.second_register} * 8]\n"
@@ -224,7 +224,7 @@ _start:
         else:
             raise ValueError(f"Unknown condition: {condition}")
 
-    def conditional_jmp_to_label(self, condition: ConditionWithRegister or ConditionWithConst, label: str) -> str:
+    def conditional_jmp_to_label(self, condition:  Union[ConditionWithRegister, ConditionWithConst], label: str) -> str:
         return self._indented(f"{self._compile_condition(condition)}\n\t{self._rel_to_jmp(condition.rel)} {self.map_label(label)}")
 
     def halt(self) -> str:
@@ -233,7 +233,7 @@ _start:
     def unconditional_jmp_to_instruction(self, instruction_to_jmp: int) -> str:
         return self._indented(f"jmp {self.instruction_labels[instruction_to_jmp]}")
 
-    def conditional_jmp_to_instruction(self, condition: ConditionWithRegister or ConditionWithConst, instruction_to_jmp: int) -> str:
+    def conditional_jmp_to_instruction(self, condition:  Union[ConditionWithRegister, ConditionWithConst], instruction_to_jmp: int) -> str:
         return self._indented(f"{self._compile_condition(condition)}\n\t{self._rel_to_jmp(condition.rel)} {self.instruction_labels[instruction_to_jmp]}")
 
     def load(self, target_register: int, address_register: int) -> str:

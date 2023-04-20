@@ -66,7 +66,7 @@ int main(void)
     def unconditional_jmp_to_label(self, label: str) -> str:
         return self._indented(f"goto {self.map_label(label)};")
     
-    def conditional_jmp_to_label(self, condition: ConditionWithRegister or ConditionWithConst, label: str) -> str:
+    def conditional_jmp_to_label(self, condition:  Union[ConditionWithRegister, ConditionWithConst], label: str) -> str:
         if isinstance(condition, ConditionWithRegister):
             return self._indented(f"if (memory[{condition.first_register}] {condition.rel} memory[{condition.second_register}])\n\t\tgoto {self.map_label(label)};")
         elif isinstance(condition, ConditionWithConst):
@@ -80,7 +80,7 @@ int main(void)
     def unconditional_jmp_to_instruction(self, instruction_to_jmp: int) -> str:
         return self._indented(f"goto {self.instruction_labels[instruction_to_jmp]};")
 
-    def conditional_jmp_to_instruction(self, condition: ConditionWithRegister or ConditionWithConst, instruction_to_jmp: int) -> str:
+    def conditional_jmp_to_instruction(self, condition:  Union[ConditionWithRegister, ConditionWithConst], instruction_to_jmp: int) -> str:
         if isinstance(condition, ConditionWithRegister):
             return self._indented(f"if (memory[{condition.first_register}] {condition.rel} memory[{condition.second_register}])\n\t\tgoto {self.instruction_labels[instruction_to_jmp]};")
         elif isinstance(condition, ConditionWithConst):

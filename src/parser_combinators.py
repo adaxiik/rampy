@@ -12,19 +12,19 @@ class ParseResult:
         return f"ParseResult({self.value}, {self.rest})"
     
     @staticmethod
-    def invalid():
+    def invalid() -> 'ParseResult':
         return ParseResult(None, None)
     
     @property
-    def is_valid(self):
+    def is_valid(self) -> bool:
         return self.value is not None and self.rest is not None
     
     @property
-    def is_invalid(self):
+    def is_invalid(self) -> bool:
         return not self.is_valid
     
     @property
-    def has_value(self):
+    def has_value(self) -> bool:
         return self.value is not None
     
     
